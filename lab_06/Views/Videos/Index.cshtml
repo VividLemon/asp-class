@@ -1,0 +1,41 @@
+﻿@model Lab_06.Models.ViewModels.VideosIndexViewModels
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                Date Posted
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Videos) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedAt)
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.VideoId">Details</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<div page-model="@Model.PagingInfo" page-action="Index"></div>

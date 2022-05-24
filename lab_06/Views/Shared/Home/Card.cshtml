@@ -1,0 +1,21 @@
+﻿@model Lab_06.Models.Video
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+ <div class="card" style="width:18rem;">
+    <div class="card-body">
+        <img src="@Model.ImagePath" class="card-img-top" alt="@Model.Name">
+        <h5 class="card-title">@Model.Name</h5>
+        <p class="card-text">@Model.Description</p>
+        <p>Posted By: @Model.User.Name</p>
+        <a asp-controller="Videos" asp-action="Play" asp-route-id="@Model.VideoId" class="btn btn-primary" style="width:100%;">Visit</a>
+            @if(@Model.CreatedAt.Date == DateTime.Now.Date)
+            {
+                <p class="card-footer">Posted At: @Model.CreatedAt.ToShortTimeString() today</p>
+            }else{
+                <p class="card-footer">Posted: @Model.CreatedAt.ToString()</p>
+            }
+    </div>
+</div>

@@ -1,0 +1,18 @@
+﻿@model Lab_06.Models.Comment
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            @Model.Text
+        </div>
+    </div>
+    <div class="row">
+        <div>
+            From: @Model.User.Name
+        </div>
+    </div>
+</div>

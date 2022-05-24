@@ -1,0 +1,48 @@
+﻿@model CartIndexViewModel
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<h2>Your cart</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Item
+            </th>
+            <th>
+                Price $
+            </th>
+            <th>
+                Subtotal
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var line in Model.Cart.Lines)
+        {
+            <tr>
+                <td>
+                    @line.Video.Name
+                </td>
+                <td>
+                    @line.Video.Price.ToString("c")
+                </td>
+                <td>
+                    <form asp-action="DeleteCartItem" method="post">
+                        <input type="hidden" name="VideoId" value="@line.Video.VideoId" />
+                        <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
+                        <button type="submit" class="btn btn-danger">
+                            Remove
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<h4>Total: <span class="text-success">@Model.Cart.TotalCartValue().ToString("c")</span></h4>
+<a class="btn btn-primary" href="@Model.ReturnUrl">Back</a><a class="btn btn-primary" asp-action="Checkout" asp-controller="Order">Checkout</a>

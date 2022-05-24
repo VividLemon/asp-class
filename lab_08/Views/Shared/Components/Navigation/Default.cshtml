@@ -1,0 +1,52 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a asp-action="Index" asp-controller="Home" asp-route-search="" class="navbar-brand">
+            Home
+        </a>
+        <form method="get" asp-action="Index" asp-controller="Home" class="d-flex">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search" />
+            <button class="btn btn-outline-success" type="submit">
+                Search
+            </button>
+        </form>
+        <div>
+            @if(User?.Identity?.IsAuthenticated ?? false)
+            {
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col mt-1">
+                            @await Component.InvokeAsync("CartSummary")
+                        </div>
+                        <div class="col">
+                            <div class="dropdown">
+                              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                Account
+                              </button>
+                              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li><a asp-action="Create"  asp-controller="Videos" class="dropdown-item">Creator panel</a></li>
+                                <li><a asp-action="Logout" asp-controller="Account" class="dropdown-item">Log out</a></li>
+                                @if ((User?.Identity?.IsAuthenticated ?? false) && (User?.IsInRole("Admin") ?? false))
+                                {
+                                    <a class="dropdown-item" asp-action="index" asp-controller="Admin">
+                                        <i class="fa-solid fa-gears"></i> Admin Settings
+                                    </a>
+                                }
+                              </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <a asp-action="Index" asp-controller="Account" class="btn btn-secondary">Log in</a>
+            }
+            
+        </div>
+    </div>
+</nav>

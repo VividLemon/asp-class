@@ -1,0 +1,156 @@
+﻿@model Lab_06.Models.ViewModels.PlayVideoViewModel
+
+@{
+    ViewData["Title"] = Model.Video.Name;
+}
+
+<div class="row">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h4>@Model.Video.Name</h4>
+            </div>
+            <div class="col">
+                <h5>Posted By: <span class="text-decoration-underline">@Model.Video.User.UserName</span></h5>
+            </div>
+        </div>
+        <hr />
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col">
+                    @*RAW!*@
+                    @Html.Raw(Model.Video.EmbedHtml)
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="row">
+                        <div class="col col-6">
+                            @if(Model.IsLike == null)
+                            {
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col">
+                                            <form asp-action="SaveLike" asp-controller="Like" method="post">
+                                                <input type="hidden" name="videoId" value="@Model.Video.VideoId" />
+                                                <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()" />
+                                                <input type="hidden" name="isLike" value="true" />
+                                                <button class="btn btn-outline-primary" aria-label="like" type="submit"><i aria-hidden="true" class="fa-solid fa-thumbs-up"></i></button>
+                                            </form>
+                                            likes @Model.Video.LikedVideo.Where(el => el.IsLike == true).Count()
+                                        </div>
+                                        <div class="col">
+                                            <form asp-action="SaveLike" asp-controller="Like" method="post">
+                                                <input type="hidden" name="videoId" value="@Model.Video.VideoId" />
+                                                <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()" />
+                                                <input type="hidden" name="isLike" value="false" />
+                                                <button class="btn btn-outline-danger" aria-label="dislike" type="submit"><i aria-hidden="true" class="fa-solid fa-thumbs-down"></i></button>
+                                            </form>
+                                            Dislikes @Model.Video.LikedVideo.Where(el => el.IsLike == false).Count()
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                if (Model.IsLike == true)
+                                {
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col">
+                                                <form asp-action="RemoveLike" asp-controller="Like" method="post">
+                                                    <input type="hidden" name="videoId" value="@Model.Video.VideoId" />
+                                                    <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()" />
+                                                    <button class="btn btn-outline-primary" aria-label="like" type="submit"><i aria-hidden="true" class="fa-solid fa-thumbs-up"></i></button>
+                                                </form>
+                                                likes @Model.Video.LikedVideo.Where(el => el.IsLike == true).Count()
+                                            </div>
+                                            <div class="col">
+                                                <form asp-action="SaveLike" asp-controller="Like" method="post">
+                                                    <input type="hidden" name="videoId" value="@Model.Video.VideoId" />
+                                                    <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()" />
+                                                    <input type="hidden" name="isLike" value="false" />
+                                                    <button class="btn btn-outline-danger" aria-label="dislike" type="submit"><i aria-hidden="true" class="fa-solid fa-thumbs-down"></i></button>
+                                                </form>
+                                                Dislikes @Model.Video.LikedVideo.Where(el => el.IsLike == false).Count()
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col">
+                                                <form asp-action="SaveLike" asp-controller="Like" method="post">
+                                                    <input type="hidden" name="videoId" value="@Model.Video.VideoId" />
+                                                    <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()" />
+                                                    <input type="hidden" name="isLike" value="true" />
+                                                    <button class="btn btn-outline-primary" aria-label="like" type="submit"><i aria-hidden="true" class="fa-solid fa-thumbs-up"></i></button>
+                                                </form>
+                                                likes @Model.Video.LikedVideo.Where(el => el.IsLike == true).Count()
+                                            </div>
+                                            <div class="col">
+                                                <form asp-action="RemoveLike" asp-controller="Like" method="post">
+                                                    <input type="hidden" name="videoId" value="@Model.Video.VideoId" />
+                                                    <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()" />
+                                                    <button class="btn btn-outline-danger" aria-label="dislike" type="submit"><i aria-hidden="true" class="fa-solid fa-thumbs-down"></i></button>
+                                                </form>
+                                                Dislikes @Model.Video.LikedVideo.Where(el => el.IsLike == false).Count()
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+
+                        </div>
+                      </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+         <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <h5>Comments:</h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col">
+                            <div class="ma-1">
+                                <form method="post" asp-action="Create" asp-controller="Comments">
+                                    <input type="hidden" value="@Model.Video.VideoId" name="videoId" />
+                                    <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()" />
+                                    <label for="text" class="form-label">
+                                        Create comment
+                                    </label>
+                                    <textarea class="form-control" name="text" placeholder="Comment" id="text"></textarea>
+                                    <button class="btn btn-primary my-1">
+                                        Create comment
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                                @foreach (Comment comment in @Model.Video.Comments.OrderBy(el => el.CreatedAt.TimeOfDay).ToList())
+                                {
+                                    @await Component.InvokeAsync("CommentCard", comment)
+                                }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>

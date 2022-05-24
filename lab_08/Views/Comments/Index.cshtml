@@ -1,0 +1,45 @@
+﻿@model Lab_06.Models.ViewModels.CommentIndexViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Text
+            </th>
+            <th>
+                UserId
+            </th>
+            <th>
+                Date Posted
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Comments) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Text)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Id)
+            </td>
+            <td>
+            <form method="post" asp-action="Destroy" asp-controller="Comments">
+                <input type="hidden" name="commentId" value="@item.CommentId" />
+                <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()" />
+                <button type="submit" class="btn btn-danger">
+                    Delete item
+                </button>
+            </form>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<div page-model="@Model.PagingInfo" page-action="Index"></div>
+<a asp-action="Create" class="btn btn-primary">Create new</a>

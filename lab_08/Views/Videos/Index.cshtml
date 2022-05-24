@@ -1,0 +1,54 @@
+﻿@model Lab_06.Models.ViewModels.VideosIndexViewModels
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                Date Posted
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Videos) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedAt)
+            </td>
+            <td>
+                <form method="get" asp-action="Create">
+                    <input type="hidden" name="videoId" value="@item.VideoId" />
+                    <button type="submit" class="btn btn-primary">
+                        Update
+                    </button>
+                </form>
+                <form method="post" asp-action="Destroy" asp-controller="Videos">
+                    <input type="hidden" name="videoId" value="@item.VideoId" />
+                    <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()" />
+                    <button type="submit" class="btn btn-danger">
+                        Delete item
+                    </button>
+                </form>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<div page-model="@Model.PagingInfo" page-action="Index"></div>
+<a asp-action="Create" class="btn btn-primary">Create new</a>

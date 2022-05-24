@@ -1,0 +1,32 @@
+﻿@model IEnumerable<Lab_05.Models.Product>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Working with visual studio</title>
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    </head>
+    <body class="p-1">
+        <h3 class="text-center">Products</h3>
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr><td>Price</td></tr>
+            </thead>
+            <tbody>
+            @foreach (var p in Model)
+            {
+                <tr>
+                    <td>@p.Name</td>
+                    <td>@p.Price.ToString("C")</td>
+                </tr>
+            }
+        </tbody>
+        </table>
+        <div class"text-center">
+            <a class="btn btn-primary" asp-action="AddProduct">Add new product</a>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,12 @@
+﻿@model Lab_06.Models.ViewModels.VideosIndexViewModels
+@{
+}
+<div class="row">
+    @foreach(Video item in Model.Videos)
+    {   
+    <div class="col">
+       @await Html.PartialAsync("Home/Card", new VideoPlayCardViewModel {Video = item, IsOwned = Model.OwnedVideos.Contains(item)})
+    </div>
+    }
+</div>
+<div page-model="@Model.PagingInfo" page-action="Index"></div>

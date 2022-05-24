@@ -1,0 +1,31 @@
+﻿@model Lab_06.Models.ViewModels.CommentCardViewModel
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<div class="card my-1">
+    <div class="card-body">
+        <h5 class="card-title">
+            <span class="text-decoration-underline">
+                @Model.Comment.User.UserName
+            </span>
+        </h5>
+        <p class="card-text">
+            @Model.Comment.Text
+        </p>
+        <div class="card-footer">
+            @Model.Comment.CreatedAt.ToShortDateString()
+            @if(Model.Comment.User == Model.User)
+            {
+                <form method="post" asp-action="Destroy" asp-controller="Comments">
+                    <input type="hidden" name="commentId" value="@Model.Comment.CommentId" />
+                    <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()" />
+                    <button type="submit" aria-label="delete comment" class="btn btn-outline-danger">
+                        <i aria-label="hidden" class="fa-solid fa-trash"></i>
+                    </button>
+                </form>
+            }
+        </div>
+    </div>
+</div>
